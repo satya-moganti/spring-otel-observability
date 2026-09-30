@@ -1,0 +1,80 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '2.7.18'
+    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+    id 'de.undercouch.download' version '5.4.0'
+}
+
+group = 'com.bookstore'
+version = '1.0.0'
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
+
+ext {
+    openTelemetryVersion = '1.32.0'
+    openTelemetryInstrumentationVersion = '1.32.0'
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Spring Boot Starters
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    
+    // Micrometer Prometheus
+    implementation 'io.micrometer:micrometer-registry-prometheus'
+    
+    // OpenTelemetry for manual instrumentation
+    // Note: OTEL Java agent is used at runtime via -javaagent flag for auto-instrumentation
+    // These dependencies enable manual span creation and custom attributes
+    implementation "io.opentelemetry:opentelemetry-api:${openTelemetryVersion}"
+    implementation "io.opentelemetry:opentelemetry-sdk:${openTelemetryVersion}"
+    implementation "io.opentelemetry:opentelemetry-exporter-otlp:${openTelemetryVersion}"
+    
+    // SLF4J API for logging with MDC (already included via Spring Boot, but explicit for clarity)
+    
+    // H2 Database
+    runtimeOnly 'com.h2database:h2'
+    
+    // Lombok
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    
+    // Testing
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+// Task to download OpenTelemetry Java Agent
+import de.undercouch.gradle.tasks.download.Download
+
+task downloadOtelAgent(type: Download) {
+    src "https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/download/v${openTelemetryInstrumentationVersion}/opentelemetry-javaagent.jar"
+    dest new File(buildDir, 'opentelemetry-javaagent.jar')
+    overwrite false
+    onlyIfModified true
+}
+
+// Task to copy OTEL agent to project root
+task copyOtelAgent(type: Copy) {
+    dependsOn downloadOtelAgent
+    from new File(buildDir, 'opentelemetry-javaagent.jar')
+    into projectDir
+}
+
+// Automatically download OTEL agent during build
+build.dependsOn copyOtelAgent
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
