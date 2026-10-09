@@ -10,13 +10,13 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - OTEL_SERVICE_NAME=book-management-service
+      - OTEL_SERVICE_NAME=book-management-app
       - OTEL_TRACES_EXPORTER=otlp
       - OTEL_METRICS_EXPORTER=otlp
       - OTEL_LOGS_EXPORTER=otlp
       - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4318
       - OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf
-      - OTEL_RESOURCE_ATTRIBUTES=service.name=book-management-service,service.version=1.0.0,deployment.environment=docker
+      - OTEL_RESOURCE_ATTRIBUTES=service.name=book-management-app,service.version=1.0.0,deployment.environment=docker
       - JAVA_OPTS=-Xmx512m -Xms256m
     depends_on:
       - otel-collector

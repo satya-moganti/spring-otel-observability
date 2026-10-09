@@ -20,7 +20,7 @@ import java.util.function.Supplier;
  */
 public class TelemetryUtils {
 
-    private static final Tracer tracer = GlobalOpenTelemetry.getTracer("book-management-service", "1.0.0");
+    private static final Tracer tracer = GlobalOpenTelemetry.getTracer("book-management-app", "1.0.0");
 
     /**
      * Executes a business operation with automatic span creation, MDC management, and exception handling.

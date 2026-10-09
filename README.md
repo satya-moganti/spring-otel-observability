@@ -225,14 +225,14 @@ The application runs on `http://localhost:8080`
 **2. Logs Dashboard:**
 - Click "Explore" → Select "Loki"
 - Use queries like:
-  - `{service_name="book-management-service"}` - All logs
-  - `{service_name="book-management-service"} |= "ERROR"` - Error logs
-  - `{service_name="book-management-service"} |= "BookController"` - Controller logs
+  - `{service_name="book-management-app"}` - All logs
+  - `{service_name="book-management-app"} |= "ERROR"` - Error logs
+  - `{service_name="book-management-app"} |= "BookController"` - Controller logs
 
 **3. Traces Dashboard:**
 - Click "Explore" → Select "Tempo"
 - Search traces by:
-  - Service name: `book-management-service`
+  - Service name: `book-management-app`
   - Operation name
   - Duration
   - Tags

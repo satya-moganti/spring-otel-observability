@@ -28,7 +28,7 @@ processors:
     attributes:
       - key: service.name
         action: upsert
-        value: book-management-service
+        value: book-management-app
 
 exporters:
   prometheus:

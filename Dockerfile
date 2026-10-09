@@ -21,13 +21,13 @@ RUN apk add --no-cache wget && \
 COPY --from=build /app/target/book-management-1.0.0.jar app.jar
 
 # Environment variables for OpenTelemetry
-ENV OTEL_SERVICE_NAME=book-management-service
+ENV OTEL_SERVICE_NAME=book-management-app
 ENV OTEL_TRACES_EXPORTER=otlp
 ENV OTEL_METRICS_EXPORTER=otlp
 ENV OTEL_LOGS_EXPORTER=otlp
 ENV OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4318
 ENV OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf
-ENV OTEL_RESOURCE_ATTRIBUTES="service.name=book-management-service,service.version=1.0.0,deployment.environment=docker"
+ENV OTEL_RESOURCE_ATTRIBUTES="service.name=book-management-app,service.version=1.0.0,deployment.environment=docker"
 ENV OTEL_EXPORTER_OTLP_TIMEOUT=10000
 ENV OTEL_BSP_MAX_EXPORT_BATCH_SIZE=512
 ENV OTEL_BSP_SCHEDULE_DELAY=5000
